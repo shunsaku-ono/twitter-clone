@@ -15,6 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
+        
         $tasks = Task::all();
         
         return view('tasks.index', [
@@ -52,6 +53,12 @@ class TaskController extends Controller
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
+        
+        // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
+        $request->user()->task()->create([
+            'content' => $request->content,
+        ]);
+
         
         return redirect('/');
     }
@@ -119,7 +126,10 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        $task->delete();
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+        }
         
         return redirect('/');
     }
