@@ -18,10 +18,15 @@
                     {!! Form::label('content', 'タスク:') !!}
                     {!! Form::text('content', null, ['class' => 'form-control']) !!}
                 </div>
-
-                {!! Form::submit('投稿', ['class' => 'btn btn-primary']) !!}
-
-            {!! Form::close() !!}
+    <div class="delete botton">
+            {!! Form::submit('投稿', ['class' => 'btn btn-primary']) !!}
+                </div>
+             @if (Auth::id() == $task->user_id)
+                            {{-- 投稿削除ボタンのフォーム --}}
+                            {!! Form::open(['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::close() !!}
+                        @endif
         </div>
     </div>
 @endsection
