@@ -15,19 +15,19 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $task = Task::all();
+        $tasks = Task::all();
          $data = [];
         if (\Auth::check()) {
             // 認証済みユーザを取得
             $user = \Auth::user();
-            // ユーザの投稿の一覧を作成日時の降順で取得
             
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
-
             $data = [
                 'user' => $user,
                 'tasks' => $tasks,
             ];
+            return view('tasks.index', [
+                'tasks' => $tasks,
+                ]);
         }
 
         // Welcomeビューでそれらを表示
@@ -44,10 +44,10 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $task = new Task;
+        $tasks = new Task;
         
         return view('tasks.create', [
-           'task' => $task,
+           'tasks' => $tasks,
            ]);
     }
 
@@ -63,16 +63,14 @@ class TaskController extends Controller
             'status' => 'required',
             'content' => 'required|max:255',
             ]);
-        $task = new Task;
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
-        
-        // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
-        $request->user()->task()->create([
+            
+        $request->user()->tasks()->create([
             'content' => $request->content,
-        ]);
-
+            'status'  => $request->status,
+            ]);
+       
+        
+      
         
         return redirect('/');
     }
@@ -85,10 +83,10 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::findOrFail($id);
+        $tasks = Task::findOrFail($id);
         
         return view('tasks.show', [
-            'task' => $task,
+            'tasks' => $tasks,
             ]);
     }
 
@@ -100,10 +98,10 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::findOrFail($id);
+        $tasks = Task::findOrFail($id);
         
         return view('tasks.edit', [
-            'task' =>$task,
+            'tasks' =>$tasks,
             ]);
         
     }
@@ -122,10 +120,10 @@ class TaskController extends Controller
             'content' => 'required|max:255',
             ]);
             
-        $task = Task::findOrFail($id);
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
+        $tasks = Task::findOrFail($id);
+        $tasks->status = $request->status;
+        $tasks->content = $request->content;
+        $tasks->save();
         
         return redirect('/');
     }
@@ -138,11 +136,11 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::findOrFail($id);
+        $tasks = Task::findOrFail($id);
         
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
-        if (\Auth::id() === $task->user_id) {
-            $task->delete();
+        if (\Auth::id() === $tasks->user_id) {
+            $tasks->delete();
         }
         
         return redirect('/');

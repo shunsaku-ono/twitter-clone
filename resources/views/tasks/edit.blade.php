@@ -4,11 +4,11 @@
 
 <!-- ここにページ毎のコンテンツを書く -->
 
-<h1>id: {{ $task->id }} のタスク編集ページ</h1>
+<h1>id: {{ $tasks->id }} のタスク編集ページ</h1>
 
     <div class="row">
         <div class="col-6">
-            {!! Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'put']) !!}
+            {!! Form::model($tasks, ['route' => ['tasks.update', $tasks->id], 'method' => 'put']) !!}
                
                 <div class="form-group">
                     {!! Form::label('status', 'ステータス:') !!}

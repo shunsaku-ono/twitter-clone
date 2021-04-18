@@ -3,27 +3,30 @@
 @section('content')
 
 <!-- ここにページ毎のコンテンツを書く -->
-<h1>id = {{ $task->id }} タスク詳細ページ</h1>
+<h1>id = {{ $tasks->id }} タスク詳細ページ</h1>
 
     <table class="table table-bordered">
         <tr>
             <th>id</th>
-            <td>{{ $task->id }}</td>
+            <td>{{ $tasks->id }}</td>
         </tr>
         <tr>
             <th>ステータス</th>
-            <th>{{ $task->status }}</th>
+            <th>{{ $tasks->status }}</th>
         </tr>
         <tr>
             <th>タスク</th>
-            <td>{{ $task->content }}</td>
+            <td>{{ $tasks->content }}</td>
         </tr>
     </table>
     
-    {!! link_to_route('tasks.edit', 'このタスクを編集', ['task' => $task->id], ['class' => 'btn btn-light']) !!}
-    {!! link_to_route('tasks.edit', 'ステータスを編集', ['task' => $task->id], ['class' => 'btn btn-light']) !!}
+    {!! link_to_route('tasks.edit', 'このタスクを編集', ['task' => $tasks->id], ['class' => 'btn btn-light']) !!}
+    {!! link_to_route('tasks.edit', 'ステータスを編集', ['task' => $tasks->id], ['class' => 'btn btn-light']) !!}
     
-    {!! Form::model($task, ['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
-        {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
-    {!! Form::close() !!}
+    @if (Auth::id() == $tasks->user_id)
+                            {{-- 投稿削除ボタンのフォーム --}}
+                            {!! Form::open(['route' => ['tasks.destroy', $tasks->id], 'method' => 'delete']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::close() !!}
+                        @endif
 @endsection

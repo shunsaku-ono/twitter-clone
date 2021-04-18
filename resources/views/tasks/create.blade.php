@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-6">
-            {!! Form::model($task, ['route' => 'tasks.store']) !!}
+            {!! Form::model($tasks, ['route' => 'tasks.store']) !!}
                 
                 <div class="form-group">
                     {!! Form::label('status', 'ステータス:') !!}
@@ -21,12 +21,7 @@
     <div class="delete botton">
             {!! Form::submit('投稿', ['class' => 'btn btn-primary']) !!}
                 </div>
-             @if (Auth::id() == $task->user_id)
-                            {{-- 投稿削除ボタンのフォーム --}}
-                            {!! Form::open(['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                            {!! Form::close() !!}
-                        @endif
+             
         </div>
     </div>
 @endsection
