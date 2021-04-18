@@ -17,8 +17,12 @@ class CreateTasklistTable extends Migration
             $table->bigIncrements('id');
             $table->string('content');
             $table->timestamps();
+            
+             // 外部キー制約
+            //$table->foreign('user_id')->references('id')->on('users');
         });
     }
+    
 
     /**
      * Reverse the migrations.
@@ -28,5 +32,7 @@ class CreateTasklistTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tasks');
+        
+        //$table->dropForeign('tasks_user_id_foreign');
     }
 }

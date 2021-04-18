@@ -11,16 +11,16 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 @if (Auth::check())
-                   
-                    <li class="nav-item dropdown">
+                   <li class="nav-item">{!! link_to_route('logout.get', 'Logout', [], ['class' => 'nav-link']) !!}</li>
+                    //<li class="nav-item dropdown">
                         
-                        <ul class="dropdown-menu dropdown-menu-right">
+                        //<ul class="dropdown-menu dropdown-menu-right">
                             
-                            <li class="dropdown-divider"></li>
+                            //<li class="dropdown-divider"></li>
                             {{-- ログアウトへのリンク --}}
-                            <li class="dropdown-item">{!! link_to_route('logout.get', 'Logout') !!}</li>
-                        </ul>
-                    </li>
+                            //<//li class="dropdown-item">{!! link_to_route('logout.get', 'Logout') !!}</li>
+                        //</ul>
+                    <///li>
                 @else
                 {{-- ユーザ登録ページへのリンク --}}
                     <li class="nav-item">{!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}</li>
@@ -31,3 +31,4 @@
         </div>
     </nav>
 </header>
+
